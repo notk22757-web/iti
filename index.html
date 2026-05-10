@@ -1,5 +1,104 @@
-<!DOCTYPE html><html><body>
-<h1>CBT Website (Firebase + Vercel)</h1>
-<p><a href="/admin.html">Admin Dashboard</a></p>
-<p><a href="/student.html">Student Exam</a></p>
-</body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CBT Student Portal</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #eaf4ff, #ffffff);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .card {
+      width: 90%;
+      max-width: 420px;
+      background: white;
+      padding: 40px 30px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 10px;
+      color: #1f2937;
+    }
+
+    p {
+      text-align: center;
+      color: #6b7280;
+      margin-bottom: 30px;
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin: 12px 0 6px;
+      color: #374151;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 10px;
+      box-sizing: border-box;
+      font-size: 16px;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 24px;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      background: #2563eb;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #1d4ed8;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>🎓 CBT Student Portal</h1>
+    <p>Enter your details to begin the test.</p>
+
+    <label>Student Name</label>
+    <input id="name" type="text" placeholder="Enter your name">
+
+    <label>Roll Number</label>
+    <input id="roll" type="text" placeholder="Enter your roll number">
+
+    <button onclick="startTest()">Start Test</button>
+  </div>
+
+  <script>
+    function startTest() {
+      const name = document.getElementById('name').value.trim();
+      const roll = document.getElementById('roll').value.trim();
+
+      if (!name || !roll) {
+        alert('Please enter both Student Name and Roll Number.');
+        return;
+      }
+
+      localStorage.setItem('studentName', name);
+      localStorage.setItem('rollNumber', roll);
+
+      window.location.href = '/student.html';
+    }
+  </script>
+</body>
+</html>
