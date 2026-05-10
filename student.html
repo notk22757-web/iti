@@ -1,0 +1,31 @@
+<!DOCTYPE html><html><body>
+<h2>Student Exam</h2>
+<input id="name" placeholder="Your Name">
+<button onclick="start()">Start</button>
+<div id="exam"></div>
+<script>
+let questions = [];
+async function start() {
+ questions = await fetch('/api/questions').then(r=>r.json());
+ const exam = document.getElementById('exam');
+ if (!questions.length) {
+   exam.innerHTML = '<p>No questions available.</p>';
+   return;
+ }
+ exam.innerHTML = questions.map((q,i) =>
+   `<p>${i+1}. ${q.question}</p>` +
+   q.options.map(o => `<label><input type="radio" name="q${i}" value="${o}"> ${o}</label><br>`).join('')
+ ).join('<hr>') + '<button onclick="submitExam()">Submit</button>';
+}
+async function submitExam() {
+ const answers = questions.map((q,i) => document.querySelector(`input[name=q${i}]:checked`)?.value || '');
+ const student = document.getElementById('name').value || 'Anonymous';
+ const r = await fetch('/api/submit', {
+   method:'POST',
+   headers:{'Content-Type':'application/json'},
+   body: JSON.stringify({student, answers})
+ }).then(r=>r.json());
+ alert(`Your Score: ${r.score}/${r.total}`);
+}
+</script>
+</body></html>

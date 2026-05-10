@@ -1,0 +1,42 @@
+<!DOCTYPE html><html><body>
+<h2>Admin Dashboard</h2>
+<div id="loginBox">
+<input id="u" value="admin">
+<input id="p" type="password" value="admin123">
+<button onclick="login()">Login</button>
+</div>
+<div id="panel" style="display:none">
+<textarea id="questions" rows="15" cols="80">[
+  {"question":"What is 2 + 2?","options":["3","4","5","6"],"answer":"4"}
+]</textarea><br>
+<button onclick="saveQuestions()">Save Questions</button>
+<button onclick="loadResults()">View Results</button>
+<pre id="results"></pre>
+</div>
+<script>
+async function login() {
+ const r = await fetch('/api/admin/login', {
+   method:'POST',
+   headers:{'Content-Type':'application/json'},
+   body: JSON.stringify({username:u.value, password:p.value})
+ }).then(r=>r.json());
+ if (r.ok) {
+   loginBox.style.display='none';
+   panel.style.display='block';
+ } else alert('Invalid login');
+}
+async function saveQuestions() {
+ const questions = JSON.parse(document.getElementById('questions').value);
+ await fetch('/api/questions', {
+   method:'POST',
+   headers:{'Content-Type':'application/json'},
+   body: JSON.stringify({questions})
+ });
+ alert('Questions saved');
+}
+async function loadResults() {
+ const data = await fetch('/api/results').then(r=>r.json());
+ document.getElementById('results').textContent = JSON.stringify(data, null, 2);
+}
+</script>
+</body></html>
